@@ -1,3 +1,11 @@
+Lesson1 
+1. Установить IBM Rational Software Architect Designer, Modelio Open Source
+или другую похожую систему.
+a. https://www.ibm.com/developerworks/downloads/r/architect/index.html
+b. https://www.modelio.org/downloads/download-modelio.html
+c. http://staruml.io/
+2. Выбрать архитектуру домашнего CRM или ERP приложения. Обосновать выбранное решение.
+
 Добрый день! 
 1. По вашему совету установил visual paradigm. Ни одной из этих программ не владею, 
 а так буду подсматривать в ваши уроки и осваивать.

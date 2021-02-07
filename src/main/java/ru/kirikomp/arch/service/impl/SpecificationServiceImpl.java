@@ -38,23 +38,25 @@ public class SpecificationServiceImpl implements SpecificationService {
     }
 
     @Override
-    public SpecificationDto copySpecification(UUID id) throws CloneNotSupportedException {
+    public SpecificationDto copySpecification(UUID id){
         SpecificationDto specification = getSpecification(id);
         return createSpecification(specification.clone());
     }
 
     @Override
     public SpecificationDto createSpecification(SpecificationDto spec) {
-        return null;
+        Specification specification = converter.convertToEntity(spec);
+
+        return converter.convertToDto(specificationDao.save(specification));
     }
 
     @Override
     public SpecificationDto editSpecification(SpecificationDto spec) {
-        return null;
+        return converter.convertToDto(specificationDao.save(converter.convertToEntity(spec)));
     }
 
     @Override
     public void deleteSpecification(SpecificationDto spec) {
-
+        specificationDao.delete(converter.convertToEntity(spec));
     }
 }

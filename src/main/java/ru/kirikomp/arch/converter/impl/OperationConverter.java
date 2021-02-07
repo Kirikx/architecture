@@ -19,7 +19,7 @@ public class OperationConverter implements ConverterArch<Operation, OperationDto
         operationDto.setName(entity.getName());
         operationDto.setDescription(entity.getDescription());
         operationDto.setParent(convertToDto(entity.getParent()));
-        operationDto.setDimensionOperation(entity.getDurationOperation());
+        operationDto.setDurationOperation(entity.getDurationOperation());
         operationDto.setWorkerType(entity.getWorkerType().getName());
         return operationDto;
 
@@ -32,9 +32,9 @@ public class OperationConverter implements ConverterArch<Operation, OperationDto
         operation.setName(dto.getName());
         operation.setDescription(dto.getDescription());
         operation.setParent(convertToEntity(dto.getParent()));
-        operation.setDurationOperation(dto.getDimensionOperation());
+        operation.setDurationOperation(dto.getDurationOperation());
         operation.setWorkerType(workerTypeDao.findByName(dto.getWorkerType()));
-//        operation.setSpecifications();
+        operation.setSpecifications(null);
         return operation;
     }
 }

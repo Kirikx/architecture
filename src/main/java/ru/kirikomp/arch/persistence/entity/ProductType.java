@@ -11,6 +11,11 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class ProductType {
+
+    public ProductType(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;

@@ -14,6 +14,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Specification {
 
+    public Specification(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;

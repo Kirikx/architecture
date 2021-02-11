@@ -1,6 +1,5 @@
 package ru.kirikomp.arch.persistence.entity;
 
-import com.sun.xml.bind.v2.model.core.ID;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +11,11 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class WorkerType {
+
+    public WorkerType(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;

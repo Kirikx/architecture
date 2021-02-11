@@ -6,7 +6,9 @@ import ru.kirikomp.arch.converter.impl.SpecificationConverter;
 import ru.kirikomp.arch.dto.SpecificationDto;
 import ru.kirikomp.arch.persistence.dao.SpecificationDao;
 import ru.kirikomp.arch.persistence.entity.Specification;
+import ru.kirikomp.arch.service.NotificationService;
 import ru.kirikomp.arch.service.SpecificationService;
+import ru.kirikomp.arch.service.impl.notification.NotificationEventEnum;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SpecificationServiceImpl implements SpecificationService {
 
+    private final NotificationService notificationService;
     private final SpecificationDao specificationDao;
     private final SpecificationConverter converter;
 
@@ -33,12 +36,12 @@ public class SpecificationServiceImpl implements SpecificationService {
                 .map(uuid -> specificationDao.findById(uuid).orElse(null))
                 .filter(Objects::isNull)
                 .collect(Collectors.toList()).stream()
-                        .map(converter::convertToDto)
-                        .collect(Collectors.toList());
+                .map(converter::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public SpecificationDto copySpecification(UUID id){
+    public SpecificationDto copySpecification(UUID id) throws CloneNotSupportedException {
         SpecificationDto specification = getSpecification(id);
         return createSpecification(specification.clone());
     }
@@ -52,11 +55,20 @@ public class SpecificationServiceImpl implements SpecificationService {
 
     @Override
     public SpecificationDto editSpecification(SpecificationDto spec) {
-        return converter.convertToDto(specificationDao.save(converter.convertToEntity(spec)));
+        Specification save = specificationDao.save(converter.convertToEntity(spec));
+        SpecificationDto specificationDto = converter.convertToDto(save);
+        save.getGroups().forEach(group -> {
+            notificationService.notification(NotificationEventEnum.EDIT, group, specificationDto);
+        });
+        return specificationDto;
     }
 
     @Override
     public void deleteSpecification(SpecificationDto spec) {
-        specificationDao.delete(converter.convertToEntity(spec));
+        Specification specification = converter.convertToEntity(spec);
+        specificationDao.delete(specification);
+        specification.getGroups().forEach(group -> {
+            notificationService.notification(NotificationEventEnum.DELETE, group, spec);
+        });
     }
 }

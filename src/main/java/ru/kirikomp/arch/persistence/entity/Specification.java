@@ -30,4 +30,10 @@ public class Specification {
     inverseJoinColumns = @JoinColumn(name = "operation_id"))
     private List<Operation> operations;
 
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "specification_group",
+            joinColumns = @JoinColumn(name = "specification_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private List<Group> groups;
+
 }

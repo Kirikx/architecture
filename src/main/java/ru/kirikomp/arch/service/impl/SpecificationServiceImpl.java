@@ -11,7 +11,6 @@ import ru.kirikomp.arch.service.SpecificationService;
 import ru.kirikomp.arch.service.impl.notification.NotificationEventEnum;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,11 +30,8 @@ public class SpecificationServiceImpl implements SpecificationService {
     }
 
     @Override
-    public List<SpecificationDto> getSpecifications(List<UUID> ids) {
-        return ids.stream()
-                .map(uuid -> specificationDao.findById(uuid).orElse(null))
-                .filter(Objects::isNull)
-                .collect(Collectors.toList()).stream()
+    public List<SpecificationDto> getSpecifications() {
+        return specificationDao.findAll().stream()
                 .map(converter::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -64,11 +60,7 @@ public class SpecificationServiceImpl implements SpecificationService {
     }
 
     @Override
-    public void deleteSpecification(SpecificationDto spec) {
-        Specification specification = converter.convertToEntity(spec);
-        specificationDao.delete(specification);
-        specification.getGroups().forEach(group -> {
-            notificationService.notification(NotificationEventEnum.DELETE, group, spec);
-        });
+    public void deleteSpecification(UUID id) {
+        specificationDao.deleteById(id);
     }
 }

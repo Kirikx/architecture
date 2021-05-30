@@ -7,9 +7,14 @@ import java.util.UUID;
 
 public interface SpecificationService {
     SpecificationDto getSpecification(UUID id);
-    List<SpecificationDto> getSpecifications(List<UUID> ids);
+
+    List<SpecificationDto> getSpecifications();
+
     SpecificationDto createSpecification(SpecificationDto spec);
+
     SpecificationDto editSpecification(SpecificationDto spec);
-    void deleteSpecification(SpecificationDto spec);
+
+    void deleteSpecification(UUID id);
+
     SpecificationDto copySpecification(UUID id) throws CloneNotSupportedException;
 }
